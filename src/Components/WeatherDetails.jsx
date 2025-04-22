@@ -1,47 +1,37 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
+import { Roboto } from "next/font/google";
 
-const WeatherDetails = () => {
-  // Step 1: Set default values (these will be overwritten after API call)
-  const [weatherData, setWeatherData] = useState({
-    clouds: { all:0 }, // Cloudy
-    main: { humidity: 0 }, // Humidity
-    wind: { speed: 0 }, // Wind
-    rain: { '1h': 0 }, // Rain (in last 1 hour)
-    coord: { lat: 0.00, lon: 0.00 }, // Latitude and Longitude
-  });
+const roboto = Roboto({ subsets: ["latin"], weight: ["400", "500", "700"] });
 
-  useEffect(() => {
-    // Simulate an API call with setTimeout to fetch weather data
-    setTimeout(() => {
-      const fetchedData = {
-        clouds: { all: 70 },
-        main: { humidity: 75 },
-        wind: { speed: 10 },
-        rain: { '1h': '15km/h' },
-        coord: { lat: 40.71, lon: -74.01 }, 
-      };
+const WeatherDetails = ({ Dataofweatherdetail }) => {
+  console.log( "WeatherDetails",Dataofweatherdetail);
 
-      setWeatherData(fetchedData); // Update state with fetched data
-    }, 2000); 
-  }, []);
-
+  
   const detailKeys = {
-    Cloudy: weatherData?.clouds?.all,
-    Humidity: weatherData?.main?.humidity,
-    Wind: weatherData?.wind?.speed,
-    Rain: weatherData?.rain?.['1h'] || 0, // rain in the last 1 hour
-    Latitude: weatherData?.coord?.lat,
-    Longitude: weatherData?.coord?.lon
+    Cloud: Dataofweatherdetail?.current?.cloud || 0,
+    Humidity: Dataofweatherdetail?.current?.humidity || 0,
+    Wind: Dataofweatherdetail?.current?.wind_kph || 0,
+    Rain: Dataofweatherdetail?.current?.precip_in || 0,
+    Latitude: Dataofweatherdetail?.location?.lat || 0,
+    Longitude: Dataofweatherdetail?.location?.lon || 0,
   };
 
   return (
-    <div className="m-4 w-full ">
-      <p className="text-2xl text-gray-300">Weather Details</p>
-      <div className="mt-4 ">
+    <div className={`m-4 w-full ${roboto.className}`}>
+      <p className="text-3xl font-semibold text-white drop-shadow-md">
+        Weather Details
+      </p>
+
+      <div className="mt-4">
         {Object.entries(detailKeys).map(([key, value]) => (
-          <div key={key} className="flex justify-between  items-center mb-2 p-2">
-            <p className="text-sm text-white/60 lg:text-2xl">{key}</p>
-            <p className="text-lg  text-white/80  lg:text-xl">{value ?? 'N/A'}</p>
+          <div
+            key={key}
+            className="flex justify-between items-center mb-3 p-2 rounded-md bg-black/20 backdrop-blur-sm"
+          >
+            <p className="text-base md:text-lg text-white/80">{key}</p>
+            <p className="text-lg md:text-xl text-white font-medium">
+              {value }
+            </p>
           </div>
         ))}
       </div>

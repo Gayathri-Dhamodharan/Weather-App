@@ -1,33 +1,49 @@
-import React from 'react'
-import { WiDaySunny } from 'react-icons/wi';
+import React from "react";
+import { Roboto } from "next/font/google";
 
-const WeatherCard = () => {
+const roboto = Roboto({ subsets: ["latin"], weight: ["400", "500", "700"] });
+
+const WeatherCard = ({ Dataofweathercard }) => {
+  console.log("Dataofweathercard", Dataofweathercard);
+
   return (
-    <div className='flex m-3 justify-start w-full lg:h-[25%]'>
-
+    <div
+      className={`flex flex-row m-4 w-full lg:h-[25%] bg-black/10 rounded-xl   ${roboto.className}`}
+    >
       {/* Celsius of the place */}
-      <div className='flex-1 flex justify-center items-center'>
-        <h1 className='text-8xl font-bold text-white/70'>19°C</h1>
+      <div className="flex justify-center items-center lg:w-1/3 w-full mb-4 lg:mb-0">
+        <h1 className="text-3xl lg:text-7xl font-bold text-white/70">
+          {Dataofweathercard?.current?.temp_c}°C
+        </h1>
       </div>
 
       {/* Location, date, and condition */}
-      <div className='flex-1 flex'>
-
+      <div className="flex flex-row justify-evenly items-center lg:w-2/3 w-full">
+      
         {/* Place and date */}
-        <div className='flex-1 flex flex-col justify-between items-center  bg-red-200 p-4'>
-          <p className='text-2xl font-medium  text-white/70'>Chennai</p>
-          <p className='text-sm text-white/80'>21-04-2025</p>
+        <div className="flex flex-col items-center  ">
+          <p className="  text-lg lg:text-2xl font-medium text-white/70">
+            {Dataofweathercard?.location?.name}
+          </p>
+          <p className=" text-sm lg:text-xl mt-1 text-white/80">
+            {Dataofweathercard?.location?.localtime?.split(" ")[0]}
+          </p>
         </div>
 
         {/* Icon and condition */}
-        <div className='flex-1 flex flex-col justify-center items-center'>
-          <WiDaySunny className='text-4xl text-yellow-400' />
-          <p className='text-md mt-1'>Sunny</p>
+        <div className="flex flex-col items-center">
+          <img
+            src={`https:${Dataofweathercard?.current?.condition?.icon}`}
+            alt={Dataofweathercard?.current?.condition?.text}
+            className="w-10 lg:w-20"
+          />
+          <p className=" text-sm lg:text-2xl  text-white/80">
+            {Dataofweathercard?.current?.condition?.text}
+          </p>
         </div>
-        
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default WeatherCard
+export default WeatherCard;
