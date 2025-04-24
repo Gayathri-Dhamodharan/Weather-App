@@ -2,7 +2,7 @@ const BASE_URL = "http://api.weatherapi.com/v1/forecast.json";
 const API_KEY = "038aa25ba92f41caa2554813252104"; // Replace with your real API key
 
 const WeatherService = async (location = "chennai") => {
-  const url = `${BASE_URL}?key=${API_KEY}&q=${location}&days=10&aqi=no&alerts=no`;
+  const url = `${BASE_URL}?key=${API_KEY}&q=${location||"chennai"}&days=10&aqi=no&alerts=no`;
 
   try {
     const res = await fetch(url);

@@ -1,4 +1,3 @@
-
 import React, { useRef } from "react";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { Roboto } from "next/font/google";
@@ -23,7 +22,7 @@ const ForecasteList = ({ DataforforecasteList }) => {
     <div
       className={`relative bg-black/30 p-1 lg:p-8  rounded-2xl shadow-lg lg:pt-10 w-full ${roboto.className}`}
     >
-      <h2 className="text-xl font-semibold mb-2 text-white/70">
+      <h2 className="max-md:hidden md:text-lg lg:text-xl font-semibold mb-2 text-white/70">
         Weather Forecaste
       </h2>
 
@@ -31,14 +30,14 @@ const ForecasteList = ({ DataforforecasteList }) => {
       <button
         onClick={() => scroll("left")}
         className="absolute left-3 top-2/4 -translate-y-1/2 z-10 bg-white/30 text-black p-1 rounded-full 
-        shadow-md hover:scale-105 transition"
+        shadow-md hover:scale-105 transition max-lg:hidden"
       >
         <FiChevronLeft size={20} />
       </button>
       <button
         onClick={() => scroll("right")}
         className="absolute right-3 top-2/4 -translate-y-1/2 z-10 bg-white/30 text-black p-1 rounded-full 
-        shadow-md hover:scale-105 transition"
+        shadow-md hover:scale-105 transition max-lg:hidden"
       >
         <FiChevronRight size={20} />
       </button>
@@ -46,14 +45,14 @@ const ForecasteList = ({ DataforforecasteList }) => {
       {/* Scrollable forecast list */}
       <div
         ref={scrollRef}
-        className="flex overflow-x-scroll gap-4 mx-10 lg:mx-3 no-scrollbar scroll-smooth px-3 "
+        className="flex overflow-x-scroll gap-4 p-2 lg:mx-3 no-scrollbar scroll-smooth px-3 "
       >
         {foreCast.map((day, idx) => (
           <div
             key={idx}
             className="
-              relative bg-black/30  lg:pt-6 lg:pb-8 rounded-xl flex-shrink-0 
-              w-[100%]  md:w-[11%] lg:w-[15.2%]
+              relative lg:bg-black/30 pb-4 lg:pt-6 lg:pb-8 rounded-xl flex-shrink-0 
+              w-[50%]  md:w-[18%] lg:w-[15.2%]
             "
           >
             {/* Weather icon */}

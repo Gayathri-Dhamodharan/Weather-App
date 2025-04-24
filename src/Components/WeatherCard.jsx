@@ -19,6 +19,7 @@ const WeatherCard = ({ Dataofweathercard }) => {
         </h1>
       </div>
 
+
       {/* Location, date, and condition */}
       <div className="flex flex-row justify-around lg:justify-evenly  items-center lg:w-2/3 w-full">
         {/* Place and date */}
@@ -37,7 +38,7 @@ const WeatherCard = ({ Dataofweathercard }) => {
             src={`https:${Dataofweathercard?.current?.condition?.icon}`!=null?
           `${Dataofweathercard?.current?.condition?.icon}`:
           " "}
-            alt={Dataofweathercard?.current?.condition?.text}
+            // alt={Dataofweathercard?.current?.condition?.text}
             className="w-10 md:w-15 lg:w-20"
           />
           <p className=" text-sm md:text-xl lg:text-2xl  text-white/80">
