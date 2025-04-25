@@ -1,11 +1,8 @@
-
-import image from '../../public/assets/Cloudy/Cloudy1.jpg'
+import image from "../../public/assets/Cloudy/Cloudy1.jpg";
 let lastImageIndex = -1;
 
-
 export function getWeatherFolder(weatherName) {
-
-    if (!weatherName || typeof weatherName !== "string") return "Default";
+  if (!weatherName || typeof weatherName !== "string") return "Default";
   const name = weatherName.toLowerCase();
 
   switch (name) {
@@ -27,7 +24,12 @@ export function getWeatherFolder(weatherName) {
       return "Clear";
     default:
       if (name.includes("rain")) return "Rain";
-      if (name.includes("snow") || name.includes("sleet")) return "Snow";
+      if (
+        name.includes("snow") ||
+        name.includes("sleet") ||
+        name.includes("freez")
+      )
+        return "Snow";
       if (name.includes("cloud")) return "Cloudy";
       if (name.includes("sun")) return "Sunny";
       if (name.includes("fog")) return "Fog";
@@ -48,5 +50,4 @@ export function getRandomImage(folder) {
 
   lastImageIndex = index;
   return `/assets/${folder}/${`${folder}${index + 1}`}.jpg`;
-
 }

@@ -1,29 +1,25 @@
+import axios from "axios";
 
+const fetchCities = async () => {
+  try {
 
-const fetchCities = async (city) => {
-  const res = await fetch(
-    "https://countriesnow.space/api/v0.1/countries/population/cities",
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ city }),
+    const response = await axios.get(
+      "https://countriesnow.space/api/v0.1/countries/population/cities"
+    );
+
+    if (!response.data || !response.data.data) {
+      throw new Error("API error: No city data found");
     }
-  );
-console.log(res,"res");
 
-  const data = await res.json();
-  if (!res.ok || !data.data) throw new Error("API error");
+    // Extract city names
+    const cityNames = response.data.data.map((item) => item.city);
 
-  return data.data.map((item) => item.city);
+    return cityNames;
+  } catch (error) {
+    // Log error details for debugging
+    console.error("Error fetching cities:", error.message);
+    return [];
+  }
 };
 
 export default fetchCities;
-
-
-
-
-
-
-
-
-

@@ -14,7 +14,7 @@
 //         placeholder="Search..."
 //         value={place}
 //         onChange={(e) => setPlace(e.target.value)}
-//         className="flex-1 bg-transparent border-b-2 border-white/30 md:border-gray-400 outline-none px-2 py-1 text-white text-md md:text-lg lg:text-xl 
+//         className="flex-1 bg-transparent border-b-2 border-white/30 md:border-gray-400 outline-none px-2 py-1 text-white text-md md:text-lg lg:text-xl
 //         placeholder-gray-500 w-full"
 //       />
 //       <button
@@ -27,22 +27,21 @@
 //   );
 // }
 
-
-
 "use client";
 
 import React, { useEffect, useState } from "react";
 import { CiSearch } from "react-icons/ci";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
-import fetchCities from "../Services/fetchCities"; 
+import fetchCities from "../Services/fetchCities";
 
 
-// console.log(fetchCities,"fetch");
-
-export default function Search({ place, setPlace, onSearchClick }) {
+export default function Search({  place, setPlace, onSearchClick }) {
   const [options, setOptions] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState("no place available");
+  fetchCities().then((cities) => {
+    // console.log(cities);
+  });
 
   // Debounce search
   useEffect(() => {
@@ -62,7 +61,7 @@ export default function Search({ place, setPlace, onSearchClick }) {
           console.error("Error fetching cities:", err);
           setLoading(false);
         });
-    }, 400);
+    }, 40);
 
     return () => clearTimeout(delayDebounce);
   }, [place]);

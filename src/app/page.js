@@ -10,21 +10,15 @@ import WeatherCard from "@/Components/WeatherCard";
 import WeatherDetails from "@/Components/WeatherDetails";
 import { getWeatherFolder, getRandomImage } from "@/Components/Background";
 
+
 const Page = () => {
-  const [place, setPlace] = useState("");
-  const [weatherData, setWeatherData] = useState(null);
+  const [place, setPlace] = useState(" ");
+
+  const [weatherData, setWeatherData] = useState("chennai");
   const [searchClicked, setSearchClicked] = useState(false);
-  const [backgroundImagePath, setBackgroundImagePath] = useState("");
-
-  const debouncedSearch = useCallback((place) => {
-    const fetchWeather = async () => {
-      const data = await WeatherService(place);
-      console.log("Weather API Data:", data);
-      setWeatherData(data);
-    };
-
-    fetchWeather();
-  }, []);
+  const [backgroundImagePath, setBackgroundImagePath] = useState(
+    "./assets/Cloudy/Cloudy4.jpg"
+  );
 
   const handleSearchClick = async () => {
     setSearchClicked(true);
@@ -36,7 +30,7 @@ const Page = () => {
     const weatherName = data?.current?.condition?.text;
     const folder = getWeatherFolder(weatherName);
     const imagePath = getRandomImage(folder);
-    setBackgroundImagePath(imagePath); //set background after everything
+    setBackgroundImagePath(imagePath); 
   };
 
   return (
@@ -47,7 +41,7 @@ const Page = () => {
       {/*layout for mobile screen*/}
       <div className="flex flex-col md:hidden w-full p-4">
         <div className="m-[0.5] bg-black/20 rounded-xl">
-          <p className="text-center text-3xl font-bold text-white/80 mt-1 mb-2">
+          <p className="text-center text-3xl font-bold text-white/80 mt-1 mb-2 ${roboto.className}">
             Weather App
           </p>
           <div>
@@ -58,7 +52,7 @@ const Page = () => {
             />
           </div>
 
-          <div className="mx-4 mb-2 bg-black/20 rounded-xl p-2 ">
+          <div className="mx-4 mb-2 bg-black/20 rounded-xl p-2 md:items-end ">
             <WeatherCard Dataofweathercard={weatherData} />
           </div>
           <div className="mx-4">
@@ -82,6 +76,7 @@ const Page = () => {
               place={place}
               setPlace={setPlace}
               onSearchClick={handleSearchClick}
+              // cities={cities}
             />
           </div>
           <div className="flex flex-1">
@@ -93,9 +88,9 @@ const Page = () => {
         </div>
 
         {/*WeatherCard and Forecast */}
-        <div className="flex flex-col flex-[2] bg-black/10 md:p-4  md:rounded-tr-2xl md:rounded-br-2xl md:w-[80%] lg:w-full">
+        <div className="flex flex-col flex-[2] bg-black/10 md:p-4  md:rounded-tr-2xl md:rounded-br-2xl md:w-[50%] lg:w-full">
           <div className="flex flex-[2] flex-col justify-between">
-            <p className="text-center text-7xl font-bold text-white/70 p-4">
+            <p className="text-center md:text-4xl lg:text-7xl font-bold text-white/70 p-4">
               Weather App
             </p>
 
