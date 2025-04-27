@@ -1,4 +1,3 @@
-import image from "../../public/assets/Cloudy/Cloudy1.jpg";
 let lastImageIndex = -1;
 
 export function getWeatherFolder(weatherName) {

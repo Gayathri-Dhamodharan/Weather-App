@@ -1,28 +1,35 @@
-
 "use client";
 
-import React, { useState, useCallback } from "react";
-import WeatherService from "@/services/WeatherService";
+import React, { useState, useEffect } from "react";
+import { v4 as uuidv4 } from "uuid";
+import WeatherService from "../Services/WeatherService";
+import { saveSearchHistory } from "../Services/searchHistory";
 
-import ForecasteList from "@/Components/ForecasteList";
-import Search from "@/Components/Search";
-import WeatherCard from "@/Components/WeatherCard";
-import WeatherDetails from "@/Components/WeatherDetails";
-import { getWeatherFolder, getRandomImage } from "@/Components/Background";
-
+import ForecasteList from "../Components/ForecasteList";
+import Search from "../Components/Search";
+import WeatherCard from "../Components/WeatherCard";
+import WeatherDetails from "../Components/WeatherDetails";
+import { getWeatherFolder, getRandomImage } from "../Components/Background";
 
 const Page = () => {
-  const [place, setPlace] = useState(" ");
-
-  const [weatherData, setWeatherData] = useState("chennai");
+  const [place, setPlace] = useState("chennai");
+  const [weatherData, setWeatherData] = useState(" ");
   const [searchClicked, setSearchClicked] = useState(false);
   const [backgroundImagePath, setBackgroundImagePath] = useState(
     "./assets/Cloudy/Cloudy4.jpg"
   );
+  const [pageLoadTime, setPageLoadTime] = useState(null);
+  
+  useEffect(() => {
+    setPageLoadTime(Date.now());
+    handleSearchClick();
+  }, []);
 
   const handleSearchClick = async () => {
     setSearchClicked(true);
     if (!place) return;
+    const searchTime = Date.now(); // Time when search is clicked
+    const timeSpent = (searchTime - pageLoadTime) / 1000; // Time spent in seconds
 
     const data = await WeatherService(place);
     setWeatherData(data);
@@ -30,7 +37,23 @@ const Page = () => {
     const weatherName = data?.current?.condition?.text;
     const folder = getWeatherFolder(weatherName);
     const imagePath = getRandomImage(folder);
-    setBackgroundImagePath(imagePath); 
+    setBackgroundImagePath(imagePath);
+
+    const searchData = {
+      userId: uuidv4(),
+      city: place,
+      temperature: data?.current?.temp_c,
+      latitude: data?.location?.lat,
+      longitude: data?.location?.lon,
+      timeSpent: timeSpent,
+    };
+
+    try {
+      await saveSearchHistory(searchData);
+      console.log("Search history saved successfully");
+    } catch (error) {
+      console.error("Failed to save search history");
+    }
   };
 
   return (

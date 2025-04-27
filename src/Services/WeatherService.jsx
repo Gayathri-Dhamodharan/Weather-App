@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const BASE_URL = "http://api.weatherapi.com/v1/forecast.json";
-const API_KEY = "038aa25ba92f41caa2554813252104"; 
+const API_KEY = "038aa25ba92f41caa2554813252104";
 
 const WeatherService = async (location = "chennai") => {
   const url = `${BASE_URL}`;
@@ -11,7 +11,7 @@ const WeatherService = async (location = "chennai") => {
       params: {
         key: API_KEY,
         q: location || "chennai",
-        days: 10,
+        days: 11,
         aqi: "no",
         alerts: "no",
       },
