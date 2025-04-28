@@ -4,8 +4,6 @@ import { Roboto } from "next/font/google";
 const roboto = Roboto({ subsets: ["latin"], weight: ["400", "500", "700"] });
 
 const WeatherDetails = ({ Dataofweatherdetail }) => {
-  // console.log("WeatherDetails", Dataofweatherdetail);
-
   const detailKeys = {
     Cloud: Dataofweatherdetail?.current?.cloud || 0,
     Humidity: Dataofweatherdetail?.current?.humidity || 0,

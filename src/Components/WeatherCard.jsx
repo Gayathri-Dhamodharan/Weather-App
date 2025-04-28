@@ -4,7 +4,6 @@ import { Roboto } from "next/font/google";
 const roboto = Roboto({ subsets: ["latin"], weight: ["400", "500", "700"] });
 
 const WeatherCard = ({ Dataofweathercard }) => {
-  // console.log("Dataofweathercard", Dataofweathercard.location.country);
   const country = Dataofweathercard?.location?.country;
   let time = null;
 
@@ -14,7 +13,7 @@ const WeatherCard = ({ Dataofweathercard }) => {
 
   return (
     <div
-      className={`flex flex-col lg:flex-row h-[100%]  lg:mb-4  lg:w-full lg:h-[25%] md:bg-black/20 rounded-xl items-center ${roboto.className} `}
+      className={`flex flex-col lg:flex-row h-[100%]  lg:mb-4  lg:w-full md:h-[35%] lg:h-[28%] md:bg-black/20 rounded-xl justify-end items-end ${roboto.className} `}
     >
       {/* Celsius of the place */}
       <div className="flex justify-center items-center lg:w-1/3 w-full mb-4 lg:mb-0 ">
@@ -39,14 +38,14 @@ const WeatherCard = ({ Dataofweathercard }) => {
         </div>
 
         {/* Icon and condition */}
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center ">
           <img
             src={
               `https:${Dataofweathercard?.current?.condition?.icon}` != null
                 ? `${Dataofweathercard?.current?.condition?.icon}`
                 : " "
             }
-            // alt={Dataofweathercard?.current?.condition?.text}
+            alt={Dataofweathercard?.current?.condition?.text}
             className="w-10 md:w-15 lg:w-18"
           />
           <p className=" text-sm md:text-xl lg:text-2xl  text-white/80">
