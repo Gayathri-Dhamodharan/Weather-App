@@ -34,8 +34,8 @@ const WeatherCard = ({ Dataofweathercard }) => {
           </p>
           <p className=" text-xs lg:text-xl mt-1 text-white/80 justify-center items-center ">
             {Dataofweathercard?.location?.localtime?.split(" ")[0]}
-            <p className=" justify-center items-center px-[25%] ">{time}</p>
           </p>
+          <p className="text-xs lg:text-xl mt-1 text-white/80 justify-center items-center px-[25%] ">{time}</p>
         </div>
 
         {/* Icon and condition */}
