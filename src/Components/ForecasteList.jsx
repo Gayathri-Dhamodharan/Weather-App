@@ -1,6 +1,8 @@
-import React, { useRef } from "react";
+ "use client";
+ import React, { useRef } from "react";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { Roboto } from "next/font/google";
+import Image from "next/image";
 
 const roboto = Roboto({ subsets: ["latin"], weight: ["400", "500", "700"] });
 
@@ -60,9 +62,11 @@ const ForecasteList = ({ DataforforecasteList }) => {
             >
               {/* Weather icon */}
               <div className="absolute -top-5 -left-5 p-4 z-50 pb-2">
-                <img
+                <Image
                   src={`https:${day?.day?.condition?.icon}`}
                   alt={day?.day?.condition?.text}
+                  width={64} 
+                  height={64} 
                   className="w-10 lg:w-16"
                 />
               </div>
