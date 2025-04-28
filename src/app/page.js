@@ -10,10 +10,10 @@ import Search from "../Components/Search";
 import WeatherCard from "../Components/WeatherCard";
 import WeatherDetails from "../Components/WeatherDetails";
 import { getWeatherFolder, getRandomImage } from "../Components/Background";
-import OnBoard from "../Components/onBoard";
+import OnBoard from "@/Components/OnBoard";
 
 const Page = () => {
-  const [place, setPlace] = useState("chennai");
+  const [place, setPlace] = useState("");
   const [weatherData, setWeatherData] = useState(" ");
   const [searchClicked, setSearchClicked] = useState(false);
   const [backgroundImagePath, setBackgroundImagePath] = useState(
@@ -22,6 +22,7 @@ const Page = () => {
   const [pageLoadTime, setPageLoadTime] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       setLoading(false);
@@ -37,11 +38,10 @@ const Page = () => {
 
   const handleSearchClick = async () => {
     setSearchClicked(true);
-    if (!place) return;
-    const searchTime = Date.now(); 
-    const timeSpent = (searchTime - pageLoadTime) / 1000; 
+    const searchTime = Date.now(); // Time when search is clicked
+    const timeSpent = (searchTime - pageLoadTime) / 1000; // Time spent in seconds
 
-    const data = await WeatherService(place);
+    const data = await WeatherService(place!=""?place:"chennai");
     setWeatherData(data);
 
     const weatherName = data?.current?.condition?.text;
@@ -65,6 +65,7 @@ const Page = () => {
       console.error("Failed to save search history");
     }
   };
+
   if (loading) {
     return <OnBoard />;
   }
@@ -112,6 +113,7 @@ const Page = () => {
               place={place}
               setPlace={setPlace}
               onSearchClick={handleSearchClick}
+              // cities={cities}
             />
           </div>
           <div className="flex flex-1">

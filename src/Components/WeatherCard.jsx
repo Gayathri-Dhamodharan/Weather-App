@@ -1,12 +1,10 @@
-"use client";
-
 import React from "react";
 import { Roboto } from "next/font/google";
-import Image from "next/image";
 
 const roboto = Roboto({ subsets: ["latin"], weight: ["400", "500", "700"] });
 
 const WeatherCard = ({ Dataofweathercard }) => {
+  // console.log("Dataofweathercard", Dataofweathercard.location.country);
   const country = Dataofweathercard?.location?.country;
   let time = null;
 
@@ -16,7 +14,7 @@ const WeatherCard = ({ Dataofweathercard }) => {
 
   return (
     <div
-      className={`flex flex-col lg:flex-row h-[100%]  lg:mb-4  lg:w-full md:h-[35%] lg:h-[28%] md:bg-black/20 rounded-xl justify-end items-end ${roboto.className} `}
+      className={`flex flex-col lg:flex-row h-[100%]  lg:mb-4  lg:w-full md:h-[35%] lg:h-[28%] md:bg-black/20 rounded-xl items-center ${roboto.className} `}
     >
       {/* Celsius of the place */}
       <div className="flex justify-center items-center lg:w-1/3 w-full mb-4 lg:mb-0 ">
@@ -36,27 +34,21 @@ const WeatherCard = ({ Dataofweathercard }) => {
           </p>
           <p className=" text-xs lg:text-xl mt-1 text-white/80 justify-center items-center ">
             {Dataofweathercard?.location?.localtime?.split(" ")[0]}
-            <p className=" justify-center items-center px-[25%] ">{time}</p>
           </p>
+          <p className="text-xs lg:text-xl mt-1 text-white/80 justify-center items-center px-[25%] ">{time}</p>
         </div>
-        {console.log(
-          Dataofweathercard?.current?.condition?.icon,
-          "Dataofweathercard?.current?.condition?.icon"
-        )}
-        {/* Icon and condition */}
-        <div className="flex flex-col items-center ">
-          <Image
-            src={
-              Dataofweathercard?.current?.condition?.icon
-                ? `https:${Dataofweathercard?.current?.condition?.icon}` // Ensure the URL always starts with 'https:'
-                : "" // Default fallback if the icon is missing
-            }
-            alt={Dataofweathercard?.current?.condition?.text || "Weather icon"}
-            className="w-10 md:w-15 lg:w-18"
-            width={100}
-            height={100}
-          />
 
+        {/* Icon and condition */}
+        <div className="flex flex-col items-center">
+          <img
+            src={
+              `https:${Dataofweathercard?.current?.condition?.icon}` != null
+                ? `${Dataofweathercard?.current?.condition?.icon}`
+                : " "
+            }
+            // alt={Dataofweathercard?.current?.condition?.text}
+            className="w-10 md:w-15 lg:w-18"
+          />
           <p className=" text-sm md:text-xl lg:text-2xl  text-white/80">
             {Dataofweathercard?.current?.condition?.text != null
               ? `${Dataofweathercard?.current?.condition?.text}`
