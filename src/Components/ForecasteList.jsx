@@ -1,4 +1,5 @@
-import React, { useRef } from "react";
+ "use client";
+ import React, { useRef } from "react";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { Roboto } from "next/font/google";
 

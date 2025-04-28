@@ -1,3 +1,5 @@
+"use client";
+
 let lastImageIndex = -1;
 
 export function getWeatherFolder(weatherName) {
@@ -37,8 +39,7 @@ export function getWeatherFolder(weatherName) {
       if (name.includes("mist")) return "Mist";
       if (name.includes("overcast")) return "Overcast";
       if (name.includes("clear")) return "Clear";
-            if (name.includes("thund")) return "Thund";
-
+      if (name.includes("thund")) return "Thund";
 
       return "Default";
   }

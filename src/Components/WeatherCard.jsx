@@ -1,5 +1,8 @@
+"use client";
+
 import React from "react";
 import { Roboto } from "next/font/google";
+// import Image from "next/image";
 
 const roboto = Roboto({ subsets: ["latin"], weight: ["400", "500", "700"] });
 
