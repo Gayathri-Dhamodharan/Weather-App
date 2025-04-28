@@ -15,5 +15,8 @@ export default {
     }
     return config;
   },
+  images: {
+    domains: ["cdn.weatherapi.com"], // Add the domain here
+  },
 };
 

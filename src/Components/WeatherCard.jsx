@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Roboto } from "next/font/google";
-// import Image from "next/image";
+import Image from "next/image";
 
 const roboto = Roboto({ subsets: ["latin"], weight: ["400", "500", "700"] });
 
@@ -39,18 +39,24 @@ const WeatherCard = ({ Dataofweathercard }) => {
             <p className=" justify-center items-center px-[25%] ">{time}</p>
           </p>
         </div>
-
+        {console.log(
+          Dataofweathercard?.current?.condition?.icon,
+          "Dataofweathercard?.current?.condition?.icon"
+        )}
         {/* Icon and condition */}
         <div className="flex flex-col items-center ">
-          <img
+          <Image
             src={
-              `https:${Dataofweathercard?.current?.condition?.icon}` != null
-                ? `${Dataofweathercard?.current?.condition?.icon}`
-                : " "
+              Dataofweathercard?.current?.condition?.icon
+                ? `https:${Dataofweathercard?.current?.condition?.icon}` // Ensure the URL always starts with 'https:'
+                : "" // Default fallback if the icon is missing
             }
-            alt={Dataofweathercard?.current?.condition?.text}
+            alt={Dataofweathercard?.current?.condition?.text || "Weather icon"}
             className="w-10 md:w-15 lg:w-18"
+            width={100}
+            height={100}
           />
+
           <p className=" text-sm md:text-xl lg:text-2xl  text-white/80">
             {Dataofweathercard?.current?.condition?.text != null
               ? `${Dataofweathercard?.current?.condition?.text}`
