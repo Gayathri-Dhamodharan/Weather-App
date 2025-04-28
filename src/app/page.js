@@ -1,101 +1,146 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import React, { useState, useEffect } from "react";
+import { v4 as uuidv4 } from "uuid";
+import WeatherService from "../Services/WeatherService";
+import { saveSearchHistory } from "../Services/searchHistory";
+
+import ForecasteList from "../Components/ForecasteList";
+import Search from "../Components/Search";
+import WeatherCard from "../Components/WeatherCard";
+import WeatherDetails from "../Components/WeatherDetails";
+import { getWeatherFolder, getRandomImage } from "../Components/Background";
+import OnBoard from "../Components/onBoard";
+
+const Page = () => {
+  const [place, setPlace] = useState("chennai");
+  const [weatherData, setWeatherData] = useState(" ");
+  const [searchClicked, setSearchClicked] = useState(false);
+  const [backgroundImagePath, setBackgroundImagePath] = useState(
+    "./assets/Cloudy/Cloudy4.jpg"
+  );
+  const [pageLoadTime, setPageLoadTime] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      setLoading(false);
+    }, 3000);
+
+    return () => clearTimeout(timeoutId);
+  }, []);
+
+  useEffect(() => {
+    setPageLoadTime(Date.now());
+    handleSearchClick();
+  }, []);
+
+  const handleSearchClick = async () => {
+    setSearchClicked(true);
+    if (!place) return;
+    const searchTime = Date.now(); 
+    const timeSpent = (searchTime - pageLoadTime) / 1000; 
+
+    const data = await WeatherService(place);
+    setWeatherData(data);
+
+    const weatherName = data?.current?.condition?.text;
+    const folder = getWeatherFolder(weatherName);
+    const imagePath = getRandomImage(folder);
+    setBackgroundImagePath(imagePath);
+
+    const searchData = {
+      userId: uuidv4(),
+      city: place,
+      temperature: data?.current?.temp_c,
+      latitude: data?.location?.lat,
+      longitude: data?.location?.lon,
+      timeSpent: timeSpent,
+    };
+
+    try {
+      await saveSearchHistory(searchData);
+      console.log("Search history saved successfully");
+    } catch (error) {
+      console.error("Failed to save search history");
+    }
+  };
+  if (loading) {
+    return <OnBoard />;
+  }
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.js
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+    <div
+      className="min-h-screen w-full bg-cover bg-center"
+      style={{ backgroundImage: `url(${backgroundImagePath})` }}
+    >
+      {/*layout for mobile screen*/}
+      <div className="flex flex-col md:hidden w-full p-4">
+        <div className="m-[0.5] bg-black/20 rounded-xl">
+          <p className="text-center text-3xl font-bold text-white/80 mt-1 mb-2 ${roboto.className}">
+            Weather App
+          </p>
+          <div>
+            <Search
+              place={place}
+              setPlace={setPlace}
+              onSearchClick={handleSearchClick}
             />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+          </div>
+
+          <div className="mx-4 mb-2 bg-black/20 rounded-xl p-2 md:items-end ">
+            <WeatherCard Dataofweathercard={weatherData} />
+          </div>
+          <div className="mx-4">
+            <ForecasteList DataforforecasteList={weatherData} />
+          </div>
+          <div className="mb-2 mx-4 pr-2 rounded-xl">
+            <WeatherDetails
+              Dataofweatherdetail={weatherData}
+              onSearchClick={searchClicked}
+            />
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </div>
+
+      {/* layout for lap and tab screen */}
+      <div className="hidden md:flex flex-row w-full h-screen md:p-8">
+        {/*Search and WeatherDetails */}
+        <div className="flex flex-col flex-1 bg-black/20 md:p-3 md:rounded-tl-2xl md:rounded-bl-2xl">
+          <div className="flex flex-1">
+            <Search
+              place={place}
+              setPlace={setPlace}
+              onSearchClick={handleSearchClick}
+            />
+          </div>
+          <div className="flex flex-1">
+            <WeatherDetails
+              Dataofweatherdetail={weatherData}
+              onSearchClick={searchClicked}
+            />
+          </div>
+        </div>
+
+        {/*WeatherCard and Forecast */}
+        <div className="flex flex-col flex-[2] bg-black/10 md:p-4  md:rounded-tr-2xl md:rounded-br-2xl md:w-[50%] lg:w-full">
+          <div className="flex flex-[2] flex-col justify-between">
+            <p className="text-center md:text-4xl lg:text-7xl font-bold text-white/70 p-4">
+              Weather App
+            </p>
+
+            <WeatherCard
+              Dataofweathercard={weatherData}
+              className="flex flex-[1] justify-end items-end"
+            />
+          </div>
+          <div className="flex flex-[1] justify-end items-end">
+            <ForecasteList DataforforecasteList={weatherData} />
+          </div>
+        </div>
+      </div>
     </div>
   );
-}
+};
+
+export default Page;
