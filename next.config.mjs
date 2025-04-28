@@ -1,9 +1,5 @@
-// /** @type {import('next').NextConfig} */
-// const nextConfig = {};
-
-// export default nextConfig;
-
-export default {
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   webpack(config, { isServer }) {
     if (!isServer) {
       // Exclude mysql2 and its dependencies from client-side bundling
@@ -16,7 +12,8 @@ export default {
     return config;
   },
   images: {
-    domains: ["cdn.weatherapi.com"], // Add the domain here
+    domains: ["cdn.weatherapi.com"], // Add the domain here for external images
   },
 };
 
+export default nextConfig;
