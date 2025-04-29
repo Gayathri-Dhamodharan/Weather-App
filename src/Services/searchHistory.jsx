@@ -1,6 +1,8 @@
 import axios from "axios";
 
 export async function saveSearchHistory(searchData) {
+  console.log(process.env.NEXT_PUBLIC_BACKENDURL);
+
   try {
     const response = await axios.post(
       // "$/user/userpost",
