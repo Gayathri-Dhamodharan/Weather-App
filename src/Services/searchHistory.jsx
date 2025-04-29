@@ -3,7 +3,8 @@ import axios from "axios";
 export async function saveSearchHistory(searchData) {
   try {
     const response = await axios.post(
-      "http://localhost:5000/user/userpost",
+      // "$/user/userpost",
+      `${process.env.NEXT_PUBLIC_BACKENDURL}/user/userpost`,
       searchData,
       {
         headers: {
