@@ -9,11 +9,7 @@ import fetchCities from "../Services/fetchCities";
 export default function Search({ place, setPlace, onSearchClick }) {
   const [options, setOptions] = useState([]);
   const [loading, setLoading] = useState("no place available");
-  // fetchCities().then((cities) => {
-  //   // console.log(cities);
-  // });
-
-  // // Debounce search
+ 
   useEffect(() => {
     if (!place) {
       setOptions([]);
