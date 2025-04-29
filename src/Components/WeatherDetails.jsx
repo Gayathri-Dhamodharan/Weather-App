@@ -26,8 +26,8 @@ const WeatherDetails = ({ Dataofweatherdetail }) => {
         {Object.entries(detailKeys).map(([key, value]) => (
           <div
             key={key}
-            className="min-w-[40%] md:min-w-full flex flex-row justify-between items-center p-1 m-1 lg:m-2
-            lg:p-3  rounded-xl bg-black/20 backdrop-blur-sm shrink-0"
+            className="min-w-[40%] md:min-w-full flex flex-row justify-between items-center m-2 
+            p-3  rounded-xl bg-black/20 backdrop-blur-sm shrink-0"
           >
             <p className="text-base md:text-lg text-white/80">{key}</p>
             <p className="text-md md:text-sm lg:text-xl text-white font-medium">
