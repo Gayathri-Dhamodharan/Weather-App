@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { v4 as uuidv4 } from "uuid";
 import WeatherService from "../Services/WeatherService";
 import { saveSearchHistory } from "../Services/searchHistory";
 
@@ -13,8 +12,63 @@ import { getWeatherFolder, getRandomImage } from "../Components/Background";
 import OnBoard from "@/Components/OnBoard";
 
 const Page = () => {
-  const [place, setPlace] = useState("");
-  const [weatherData, setWeatherData] = useState(" ");
+  // const [place, setPlace] = useState("chennai");
+  // const [weatherData, setWeatherData] = useState(" ");
+  // const [searchClicked, setSearchClicked] = useState(false);
+  // const [backgroundImagePath, setBackgroundImagePath] = useState(
+  //   "./assets/Cloudy/Cloudy4.jpg"
+  // );
+  // const [pageLoadTime, setPageLoadTime] = useState(null);
+  // const [loading, setLoading] = useState(true);
+
+  // useEffect(() => {
+  //   const timeoutId = setTimeout(() => {
+  //     setLoading(false);
+  //   }, 2000);
+
+  //   return () => clearTimeout(timeoutId);
+  // }, []);
+
+  // useEffect(() => {
+  //   setPageLoadTime(Date.now());
+  //   handleSearchClick();
+  // }, []);
+
+  // const handleSearchClick = async () => {
+  //   setSearchClicked(true);
+  //   const searchTime = Date.now();
+  //   const timeSpent = (searchTime - pageLoadTime) / 1000;
+
+  //   const data = await WeatherService(place);
+  //   setWeatherData(data);
+
+  //   const weatherName = data?.current?.condition?.text;
+  //   const folder = getWeatherFolder(weatherName);
+  //   const imagePath = getRandomImage(folder);
+  //   setBackgroundImagePath(imagePath);
+
+  //   const searchData = {
+  //     city: place,
+  //     temperature: data?.current?.temp_c,
+  //     latitude: data?.location?.lat,
+  //     longitude: data?.location?.lon,
+  //     timeSpent: timeSpent,
+  //   };
+
+  //   try {
+  //     await saveSearchHistory(searchData);
+  //     console.log("Search history saved successfully");
+  //   } catch (error) {
+  //     console.error("Failed to save search history");
+  //   }
+  // };
+
+  // if (loading) {
+  //   return <OnBoard />;
+  // }
+
+  const [place, setPlace] = useState("chennai");
+  const [weatherData, setWeatherData] = useState(null);
   const [searchClicked, setSearchClicked] = useState(false);
   const [backgroundImagePath, setBackgroundImagePath] = useState(
     "./assets/Cloudy/Cloudy4.jpg"
@@ -22,54 +76,65 @@ const Page = () => {
   const [pageLoadTime, setPageLoadTime] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  
+  // Delay loader
   useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      setLoading(false);
-    }, 2000);
-
+    const timeoutId = setTimeout(() => setLoading(false), 2000);
     return () => clearTimeout(timeoutId);
   }, []);
 
+  // Fetch weather on first load, but don't save history
   useEffect(() => {
-    setPageLoadTime(Date.now());
-    handleSearchClick();
-  }, []);
+    const fetchInitialWeather = async () => {
+      setPageLoadTime(Date.now());
 
-  const handleSearchClick = async () => {
-    setSearchClicked(true);
-    const searchTime = Date.now(); // Time when search is clicked
-    const timeSpent = (searchTime - pageLoadTime) / 1000; // Time spent in seconds
+      try {
+        const data = await WeatherService(place);
+        setWeatherData(data);
 
-    const data = await WeatherService(place!=""?place:"chennai");
-    setWeatherData(data);
-
-    const weatherName = data?.current?.condition?.text;
-    const folder = getWeatherFolder(weatherName);
-    const imagePath = getRandomImage(folder);
-    setBackgroundImagePath(imagePath);
-
-    const searchData = {
-      userId: uuidv4(),
-      city: place,
-      temperature: data?.current?.temp_c,
-      latitude: data?.location?.lat,
-      longitude: data?.location?.lon,
-      timeSpent: timeSpent,
+        const weatherName = data?.current?.condition?.text;
+        const folder = getWeatherFolder(weatherName);
+        const imagePath = getRandomImage(folder);
+        setBackgroundImagePath(imagePath);
+      } catch (error) {
+        console.error("Initial fetch failed:", error);
+      }
     };
 
+    fetchInitialWeather();
+  }, []);
+
+  // Fetch and save when user searches
+  const handleSearchClick = async () => {
+    setSearchClicked(true);
+    const searchTime = Date.now();
+    const timeSpent = (searchTime - pageLoadTime) / 1000;
+
     try {
+      const data = await WeatherService(place);
+      setWeatherData(data);
+
+      const weatherName = data?.current?.condition?.text;
+      const folder = getWeatherFolder(weatherName);
+      const imagePath = getRandomImage(folder);
+      setBackgroundImagePath(imagePath);
+
+      const searchData = {
+        city: place,
+        temperature: data?.current?.temp_c,
+        latitude: data?.location?.lat,
+        longitude: data?.location?.lon,
+        timeSpent,
+      };
+
       await saveSearchHistory(searchData);
-      console.log("Search history saved successfully");
     } catch (error) {
-      console.error("Failed to save search history");
+      console.error("User search failed:", error);
     }
   };
 
-  if (loading) {
+  if (loading || !weatherData) {
     return <OnBoard />;
   }
-
   return (
     <div
       className="min-h-screen w-full bg-cover bg-center"

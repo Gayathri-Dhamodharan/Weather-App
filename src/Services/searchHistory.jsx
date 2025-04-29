@@ -2,11 +2,15 @@ import axios from "axios";
 
 export async function saveSearchHistory(searchData) {
   try {
-    const response = await axios.post("/api/store_search", searchData, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const response = await axios.post(
+      "http://localhost:5000/user/userpost",
+      searchData,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
     console.log("Search history response", response);
     return response.data;
