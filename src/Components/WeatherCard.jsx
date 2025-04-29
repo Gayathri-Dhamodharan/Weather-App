@@ -4,7 +4,6 @@ import { Roboto } from "next/font/google";
 const roboto = Roboto({ subsets: ["latin"], weight: ["400", "500", "700"] });
 
 const WeatherCard = ({ Dataofweathercard }) => {
-  // console.log("Dataofweathercard", Dataofweathercard.location.country);
   const country = Dataofweathercard?.location?.country;
   let time = null;
 
@@ -35,7 +34,9 @@ const WeatherCard = ({ Dataofweathercard }) => {
           <p className=" text-xs lg:text-xl mt-1 text-white/80 justify-center items-center ">
             {Dataofweathercard?.location?.localtime?.split(" ")[0]}
           </p>
-          <p className="text-xs lg:text-xl mt-1 text-white/80 justify-center items-center px-[25%] ">{time}</p>
+          <p className="text-xs lg:text-xl mt-1 text-white/80 justify-center items-center px-[25%] ">
+            {time}
+          </p>
         </div>
 
         {/* Icon and condition */}
@@ -46,8 +47,8 @@ const WeatherCard = ({ Dataofweathercard }) => {
                 ? `${Dataofweathercard?.current?.condition?.icon}`
                 : " "
             }
-            // alt={Dataofweathercard?.current?.condition?.text}
-            className="w-10 md:w-15 lg:w-18"
+            alt={Dataofweathercard?.current?.condition?.text}
+            className="w-10 md:w-15 lg:w-20"
           />
           <p className=" text-sm md:text-xl lg:text-2xl  text-white/80">
             {Dataofweathercard?.current?.condition?.text != null
