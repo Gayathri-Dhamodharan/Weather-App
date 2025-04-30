@@ -143,7 +143,7 @@ const Page = () => {
       {/*layout for mobile screen*/}
       <div className="flex flex-col md:hidden w-full p-4">
         <div className="m-[0.5] bg-black/20 rounded-xl">
-          <p className="text-center text-3xl font-bold text-white/80 mt-1 mb-2 ${roboto.className}">
+          <p className="text-center text-3xl font-bold text-white/80 mt-1 mb-2 ${roboto.className} pt-4">
             Weather App
           </p>
           <div>
@@ -157,10 +157,10 @@ const Page = () => {
           <div className="mx-4 mb-2 bg-black/20 rounded-xl p-2 md:items-end ">
             <WeatherCard Dataofweathercard={weatherData} />
           </div>
-          <div className="mx-4">
+          <div className="mx-4 pt-2">
             <ForecasteList DataforforecasteList={weatherData} />
           </div>
-          <div className="mb-2 mx-4 pr-2 rounded-xl">
+          <div className="mb-2 mx-4 pr-2 rounded-xl pb-2">
             <WeatherDetails
               Dataofweatherdetail={weatherData}
               onSearchClick={searchClicked}
